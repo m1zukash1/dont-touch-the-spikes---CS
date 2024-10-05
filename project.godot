@@ -1,0 +1,45 @@
+; Engine configuration file.
+; It's best edited using the editor UI and not directly,
+; since the parameters that go here are not all obvious.
+;
+; Format:
+;   [section] ; section goes between []
+;   param=value ; assign values to parameters
+
+config_version=5
+
+[application]
+
+config/name="Don't Touch The Spikes | C#"
+run/main_scene="res://Scenes/Game.tscn"
+config/features=PackedStringArray("4.3", "C#", "Mobile")
+config/icon="res://icon.png"
+
+[display]
+
+window/size/viewport_width=720
+window/size/viewport_height=1280
+window/stretch/mode="viewport"
+window/stretch/aspect="keep_width"
+window/handheld/orientation="portrait"
+window/vsync/vsync_mode=0
+
+[dotnet]
+
+project/assembly_name="Don-t Touch The Spikes - C#"
+
+[gui]
+
+common/drop_mouse_on_gui_input_disabled=true
+
+[input_devices]
+
+pointing/emulate_touch_from_mouse=true
+pointing/emulate_mouse_from_touch=false
+
+[rendering]
+
+renderer/rendering_method="mobile"
+anti_aliasing/quality/msaa_2d=1
+quality/driver/driver_name="GLES2"
+vram_compression/import_etc=true

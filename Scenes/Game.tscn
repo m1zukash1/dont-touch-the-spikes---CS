@@ -1,0 +1,172 @@
+[gd_scene load_steps=24 format=3 uid="uid://bstq61tflkasa"]
+
+[ext_resource type="Script" path="res://Scripts/Bird.cs" id="1_53med"]
+[ext_resource type="Texture2D" uid="uid://6jocqjyw5wb" path="res://Assets/Textures/Bird/Bird_dead.png" id="1_eq1r0"]
+[ext_resource type="Texture2D" uid="uid://dq3nxjvsdq7if" path="res://Assets/Textures/Bird/Bird.png" id="2_76e2o"]
+[ext_resource type="Texture2D" uid="uid://dbyl1sgbarhwv" path="res://Assets/Textures/Bird/Bird_flapped.png" id="3_048b3"]
+[ext_resource type="Texture2D" uid="uid://dyi121qmn3k30" path="res://Assets/Textures/Game/ScoreCircle.png" id="3_e6f8e"]
+[ext_resource type="Texture2D" uid="uid://dgs15enfi7441" path="res://Assets/Textures/Game/BackGround.png" id="5_oqw5e"]
+[ext_resource type="Texture2D" uid="uid://cxhlh1cye4vk3" path="res://Assets/Textures/Game/Spikes.png" id="6_ehqws"]
+[ext_resource type="Script" path="res://Scripts/SpikeManager.cs" id="6_pjs4x"]
+[ext_resource type="PackedScene" uid="uid://dmqmxsjrkjfe4" path="res://Scenes/SpikeObject.tscn" id="7_og58m"]
+[ext_resource type="PackedScene" uid="uid://by5g1qpucwxog" path="res://Scenes/Components/ReboundWallComponent.tscn" id="8_qw4qq"]
+[ext_resource type="Script" path="res://Scripts/SpikeSpawner.cs" id="8_ysqi3"]
+[ext_resource type="PackedScene" uid="uid://btx2x5x8o5nt0" path="res://Scenes/Components/DeathZoneComponent.tscn" id="9_82gds"]
+[ext_resource type="FontFile" uid="uid://c5lw0kg3y6frt" path="res://Assets/Fonts/GemunuLibre-SemiBold.ttf" id="9_aless"]
+[ext_resource type="Script" path="res://Scripts/ScoreHandler.cs" id="9_hncon"]
+[ext_resource type="PackedScene" uid="uid://c0h73a7wj6o7n" path="res://Scenes/ParticleObject.tscn" id="10_rttel"]
+[ext_resource type="PackedScene" uid="uid://bt3ivx5b5fik6" path="res://Scenes/CandyObject.tscn" id="11_72wu0"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_qr77k"]
+size = Vector2(40, 1280)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_2ulyx"]
+size = Vector2(40, 1280)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_7u3pk"]
+size = Vector2(720, 120)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_o7x78"]
+size = Vector2(720, 180)
+
+[sub_resource type="LabelSettings" id="LabelSettings_6a876"]
+font = ExtResource("9_aless")
+font_size = 336
+font_color = Color(0.921569, 0.921569, 0.921569, 1)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_kdn0b"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("1_eq1r0")
+}],
+"loop": false,
+"name": &"death",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("2_76e2o")
+}],
+"loop": false,
+"name": &"default",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("3_048b3")
+}, {
+"duration": 1.0,
+"texture": ExtResource("2_76e2o")
+}],
+"loop": false,
+"name": &"jump",
+"speed": 3.0
+}]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_gnmvf"]
+size = Vector2(48, 48)
+
+[node name="Game" type="Node2D"]
+
+[node name="SpriteContainer" type="Node2D" parent="."]
+
+[node name="Background" type="Sprite2D" parent="SpriteContainer"]
+modulate = Color(0.921569, 0.921569, 0.921569, 1)
+position = Vector2(360, 640)
+texture = ExtResource("5_oqw5e")
+
+[node name="Spikes" type="Sprite2D" parent="SpriteContainer"]
+modulate = Color(0.501961, 0.501961, 0.501961, 1)
+position = Vector2(360, 640)
+texture = ExtResource("6_ehqws")
+
+[node name="ScoreCircle" type="Sprite2D" parent="SpriteContainer"]
+position = Vector2(360, 640)
+texture = ExtResource("3_e6f8e")
+
+[node name="GameBordersContainer" type="Node2D" parent="."]
+
+[node name="ReboundWallComponent" parent="GameBordersContainer" instance=ExtResource("8_qw4qq")]
+position = Vector2(720, 640)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="GameBordersContainer/ReboundWallComponent"]
+shape = SubResource("RectangleShape2D_qr77k")
+
+[node name="ReboundWallComponent2" parent="GameBordersContainer" instance=ExtResource("8_qw4qq")]
+position = Vector2(0, 640)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="GameBordersContainer/ReboundWallComponent2"]
+shape = SubResource("RectangleShape2D_2ulyx")
+
+[node name="DeathZoneComponent2" parent="GameBordersContainer" instance=ExtResource("9_82gds")]
+position = Vector2(360, 0)
+ResetVerticalVelocity = true
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="GameBordersContainer/DeathZoneComponent2"]
+shape = SubResource("RectangleShape2D_7u3pk")
+debug_color = Color(1, 0, 0, 0.419608)
+
+[node name="DeathZoneComponent" parent="GameBordersContainer" instance=ExtResource("9_82gds")]
+position = Vector2(360, 1280)
+JumpOnCollide = true
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="GameBordersContainer/DeathZoneComponent"]
+shape = SubResource("RectangleShape2D_o7x78")
+debug_color = Color(1, 0, 0, 0.419608)
+
+[node name="SpikeManager" type="Node2D" parent="." node_paths=PackedStringArray("spikeSpawner", "Bird", "ScoreHandler")]
+modulate = Color(0.501961, 0.501961, 0.501961, 1)
+script = ExtResource("6_pjs4x")
+SpikeObjectScene = ExtResource("7_og58m")
+spikeSpawner = NodePath("SpikeSpawner")
+Bird = NodePath("../Bird")
+ScoreHandler = NodePath("../ScoreHandler")
+
+[node name="SpikeSpawner" type="Node" parent="SpikeManager"]
+script = ExtResource("8_ysqi3")
+SpikeObjectScene = ExtResource("7_og58m")
+
+[node name="ScoreHandler" type="Node2D" parent="." node_paths=PackedStringArray("ScoreLabel", "Bird")]
+script = ExtResource("9_hncon")
+ScoreLabel = NodePath("ScoreLabel")
+Bird = NodePath("../Bird")
+
+[node name="ScoreLabel" type="Label" parent="ScoreHandler"]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_right = 720.0
+offset_bottom = 1255.0
+grow_horizontal = 2
+grow_vertical = 2
+text = "00"
+label_settings = SubResource("LabelSettings_6a876")
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="CandyManager" type="Node2D" parent="."]
+
+[node name="Candy" parent="CandyManager" instance=ExtResource("11_72wu0")]
+position = Vector2(632, 400)
+
+[node name="Candy2" parent="CandyManager" instance=ExtResource("11_72wu0")]
+position = Vector2(80, 264)
+
+[node name="Candy3" parent="CandyManager" instance=ExtResource("11_72wu0")]
+position = Vector2(80, 496)
+
+[node name="Bird" type="CharacterBody2D" parent="." node_paths=PackedStringArray("AnimatedSprite2D")]
+position = Vector2(360, 640)
+script = ExtResource("1_53med")
+ParticleObjectScene = ExtResource("10_rttel")
+AnimatedSprite2D = NodePath("AnimatedSprite2D")
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="Bird"]
+sprite_frames = SubResource("SpriteFrames_kdn0b")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Bird"]
+shape = SubResource("RectangleShape2D_gnmvf")
+
+[node name="Camera2D" type="Camera2D" parent="."]
+position = Vector2(360, 640)

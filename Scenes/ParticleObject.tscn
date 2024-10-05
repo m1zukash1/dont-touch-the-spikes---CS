@@ -1,0 +1,22 @@
+[gd_scene load_steps=5 format=3 uid="uid://c0h73a7wj6o7n"]
+
+[ext_resource type="Texture2D" uid="uid://jg5xjm3vofle" path="res://Assets/Textures/Bird/Particle.png" id="1_b71ek"]
+[ext_resource type="Script" path="res://Scripts/ParticleObject.cs" id="2_vsrkp"]
+
+[sub_resource type="Curve" id="Curve_w20xx"]
+_data = [Vector2(0, 1), 0.0, 0.0, 0, 0, Vector2(1, 0), 0.0, 0.0, 0, 0]
+point_count = 2
+
+[sub_resource type="Gradient" id="Gradient_r5442"]
+colors = PackedColorArray(1, 1, 1, 1, 1, 1, 1, 0.588235)
+
+[node name="ParticleObject" type="CPUParticles2D"]
+emitting = false
+amount = 4
+lifetime = 0.4
+one_shot = true
+texture = ExtResource("1_b71ek")
+gravity = Vector2(0, 0)
+scale_amount_curve = SubResource("Curve_w20xx")
+color_ramp = SubResource("Gradient_r5442")
+script = ExtResource("2_vsrkp")

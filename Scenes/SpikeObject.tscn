@@ -1,0 +1,19 @@
+[gd_scene load_steps=4 format=3 uid="uid://dmqmxsjrkjfe4"]
+
+[ext_resource type="Script" path="res://Scripts/SpikeObject.cs" id="1_vqbyp"]
+[ext_resource type="Texture2D" uid="uid://cmslmbmk78qg8" path="res://Assets/Textures/Game/Spike.png" id="2_hurh1"]
+[ext_resource type="PackedScene" uid="uid://btx2x5x8o5nt0" path="res://Scenes/Components/DeathZoneComponent.tscn" id="3_op7ky"]
+
+[node name="SpikeObject" type="Node2D" node_paths=PackedStringArray("deathZoneComponent")]
+script = ExtResource("1_vqbyp")
+deathZoneComponent = NodePath("DeathZoneComponent")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+position = Vector2(24, 0)
+rotation = 1.5708
+texture = ExtResource("2_hurh1")
+
+[node name="DeathZoneComponent" parent="." instance=ExtResource("3_op7ky")]
+
+[node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="DeathZoneComponent"]
+polygon = PackedVector2Array(0, -40, 48, 0, 0, 40)

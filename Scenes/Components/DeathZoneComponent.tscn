@@ -1,0 +1,6 @@
+[gd_scene load_steps=2 format=3 uid="uid://btx2x5x8o5nt0"]
+
+[ext_resource type="Script" path="res://Scripts/DeathZoneComponent.cs" id="1_dmf5m"]
+
+[node name="DeathZoneComponent" type="Area2D"]
+script = ExtResource("1_dmf5m")
