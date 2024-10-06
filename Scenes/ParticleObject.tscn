@@ -13,7 +13,7 @@ colors = PackedColorArray(1, 1, 1, 1, 1, 1, 1, 0.588235)
 [node name="ParticleObject" type="CPUParticles2D"]
 emitting = false
 amount = 4
-lifetime = 0.4
+lifetime = 0.45
 one_shot = true
 texture = ExtResource("1_b71ek")
 gravity = Vector2(0, 0)

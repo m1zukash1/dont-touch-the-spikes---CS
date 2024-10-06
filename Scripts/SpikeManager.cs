@@ -28,7 +28,7 @@ public partial class SpikeManager : Node2D
         leftSpikes = spikeSpawner.LeftSpikes;
         rightSpikes = spikeSpawner.RightSpikes;
         
-        LoadSpikes();
+        //LoadSpikes();
 
 		Bird.HitWall += OnBirdHitWall;
     }
@@ -65,23 +65,33 @@ public partial class SpikeManager : Node2D
         rightSpikes.ForEach(spike => spike.Disable());
     }
 
-    private int GetSpikeCountBasedOnScore()
-    {
-        int score = ScoreHandler.Score;
-        
-        (int minSpikes, int maxSpikes) = score switch
-        {
-            >= 50 => (7, 8),
-            >= 40 => (7, 7),
-            >= 35 => (6, 7),
-            >= 30 => (5, 7),
-            >= 25 => (4, 7),
-            >= 20 => (4, 6),
-            >= 10 => (4, 5),
-            >= 5  => (3, 4),
-            _     => (2, 3)
-        };
+private int GetSpikeCountBasedOnScore()
+{
+    int score = ScoreHandler.Score;
+    bool isHardMode = false; // PLACE HOLDER
 
-        return random.Next(minSpikes, maxSpikes + 1);
-    }
+    (int minSpikes, int maxSpikes) = score switch
+    {
+        >= 50 when isHardMode => (8, 9),  // More spikes in hard mode
+        >= 50 => (7, 8),
+        >= 40 when isHardMode => (7, 8),
+        >= 40 => (7, 7),
+        >= 35 when isHardMode => (6, 8),
+        >= 35 => (6, 7),
+        >= 30 when isHardMode => (5, 8),
+        >= 30 => (5, 7),
+        >= 25 when isHardMode => (4, 8),
+        >= 25 => (4, 7),
+        >= 20 when isHardMode => (4, 7),
+        >= 20 => (4, 6),
+        >= 10 when isHardMode => (4, 6),
+        >= 10 => (4, 5),
+        >= 5 when isHardMode => (3, 5),
+        >= 5 => (3, 4),
+        _ => (2, 3)
+    };
+
+    return random.Next(minSpikes, maxSpikes + 1);
+}
+
 }

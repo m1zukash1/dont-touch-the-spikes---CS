@@ -27,7 +27,7 @@ public partial class Bird : CharacterBody2D
     private float jumpSpeed = 700f;
     private float gravity = 2000f;
 
-    private bool isDead = false;
+    public bool isDead = false;
 
     public FacingDirection CurrentFacingDirection { get; private set; } = FacingDirection.Right;
 
@@ -41,6 +41,7 @@ public partial class Bird : CharacterBody2D
 
     public override void _Ready()
     {
+        GD.Print(GetViewport().GetVisibleRect().Size);
     }
 
     public async void OnHitWall()

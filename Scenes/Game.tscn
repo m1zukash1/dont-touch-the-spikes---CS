@@ -1,4 +1,4 @@
-[gd_scene load_steps=24 format=3 uid="uid://bstq61tflkasa"]
+[gd_scene load_steps=25 format=3 uid="uid://bstq61tflkasa"]
 
 [ext_resource type="Script" path="res://Scripts/Bird.cs" id="1_53med"]
 [ext_resource type="Texture2D" uid="uid://6jocqjyw5wb" path="res://Assets/Textures/Bird/Bird_dead.png" id="1_eq1r0"]
@@ -16,6 +16,7 @@
 [ext_resource type="Script" path="res://Scripts/ScoreHandler.cs" id="9_hncon"]
 [ext_resource type="PackedScene" uid="uid://c0h73a7wj6o7n" path="res://Scenes/ParticleObject.tscn" id="10_rttel"]
 [ext_resource type="PackedScene" uid="uid://bt3ivx5b5fik6" path="res://Scenes/CandyObject.tscn" id="11_72wu0"]
+[ext_resource type="Script" path="res://Scripts/CandyManager.cs" id="11_rjc8d"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_qr77k"]
 size = Vector2(40, 1280)
@@ -65,9 +66,11 @@ animations = [{
 }]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_gnmvf"]
-size = Vector2(48, 48)
+size = Vector2(42, 42)
 
 [node name="Game" type="Node2D"]
+metadata/_edit_horizontal_guides_ = [1104.0, 152.0]
+metadata/_edit_vertical_guides_ = [104.0, 616.0]
 
 [node name="SpriteContainer" type="Node2D" parent="."]
 
@@ -145,16 +148,10 @@ label_settings = SubResource("LabelSettings_6a876")
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="CandyManager" type="Node2D" parent="."]
-
-[node name="Candy" parent="CandyManager" instance=ExtResource("11_72wu0")]
-position = Vector2(632, 400)
-
-[node name="Candy2" parent="CandyManager" instance=ExtResource("11_72wu0")]
-position = Vector2(80, 264)
-
-[node name="Candy3" parent="CandyManager" instance=ExtResource("11_72wu0")]
-position = Vector2(80, 496)
+[node name="CandyManager" type="Node2D" parent="." node_paths=PackedStringArray("Bird")]
+script = ExtResource("11_rjc8d")
+Bird = NodePath("../Bird")
+CandyObjectScene = ExtResource("11_72wu0")
 
 [node name="Bird" type="CharacterBody2D" parent="." node_paths=PackedStringArray("AnimatedSprite2D")]
 position = Vector2(360, 640)

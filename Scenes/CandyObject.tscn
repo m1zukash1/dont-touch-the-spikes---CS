@@ -1,8 +1,9 @@
-[gd_scene load_steps=6 format=3 uid="uid://bt3ivx5b5fik6"]
+[gd_scene load_steps=7 format=3 uid="uid://bt3ivx5b5fik6"]
 
 [ext_resource type="Texture2D" uid="uid://ccrovicaox78v" path="res://Assets/Textures/Game/Candy.png" id="1_b2sch"]
 [ext_resource type="Script" path="res://Scripts/CandyObject.cs" id="1_ys0ry"]
 [ext_resource type="PackedScene" uid="uid://bnxcrk48rlko0" path="res://Scenes/Components/BirdDetectorComponent.tscn" id="2_ale8y"]
+[ext_resource type="FontFile" uid="uid://dbuc4y6mt4n5c" path="res://Assets/Fonts/Blissful Thinking.otf" id="2_nb0mk"]
 [ext_resource type="PackedScene" uid="uid://bk67mtqyxixnb" path="res://Scenes/Components/WiggleComponent.tscn" id="4_yuj7o"]
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_q5woi"]
@@ -12,6 +13,7 @@ height = 62.0
 [node name="Candy" type="Node2D" node_paths=PackedStringArray("BirdDetector")]
 script = ExtResource("1_ys0ry")
 BirdDetector = NodePath("BirdDetectorComponent")
+LabelFont = ExtResource("2_nb0mk")
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
 texture = ExtResource("1_b2sch")
@@ -27,5 +29,5 @@ debug_color = Color(1, 1, 0, 0.419608)
 nodeToWiggle = NodePath("..")
 amplitudeX = 5.0
 amplitudeY = 1.0
-speedX = 17.5
+speedX = 12.5
 speedY = 5.0
