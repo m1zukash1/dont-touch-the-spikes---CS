@@ -27,7 +27,6 @@ debug_color = Color(1, 1, 0, 0.419608)
 
 [node name="WiggleComponent" parent="." node_paths=PackedStringArray("nodeToWiggle") instance=ExtResource("4_yuj7o")]
 nodeToWiggle = NodePath("..")
-amplitudeX = 5.0
-amplitudeY = 1.0
-speedX = 12.5
+amplitudeX = 1.0
+speedX = 5.0
 speedY = 5.0

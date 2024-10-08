@@ -1,6 +1,8 @@
 using Godot;
 using System;
-using System.Threading.Tasks; // Import for async and delay
+using System.Diagnostics;
+using System.Threading;
+using System.Threading.Tasks; // Import for async, delay, and cancellation
 
 public partial class Bird : CharacterBody2D
 {
@@ -39,9 +41,14 @@ public partial class Bird : CharacterBody2D
     private float particleCooldown = 0.33f; // Cooldown time for particles
     private bool particleCooldownExpired = true;
 
+    // For managing jump task cancellation
+    private CancellationTokenSource jumpCancellationTokenSource;
+
+    public bool CanMove { get; set; } = false;
+    
     public override void _Ready()
     {
-        GD.Print(GetViewport().GetVisibleRect().Size);
+        // Initialize anything necessary here
     }
 
     public async void OnHitWall()
@@ -73,6 +80,7 @@ public partial class Bird : CharacterBody2D
         {
             return;
         }
+        Debug.Assert(false); //IMPLEMENT DEATH!
         isDead = true;
         EmitSignal(SignalName.Died);
         speed *= 3;
@@ -94,6 +102,11 @@ public partial class Bird : CharacterBody2D
 
     public override void _Process(double delta)
     {
+        if(!CanMove)
+        {
+            return;
+        }
+
         Velocity = new Vector2(speed, (float)(Velocity.Y + gravity * delta));
         SetVelocity(Velocity);
         MoveAndSlide();
@@ -106,22 +119,55 @@ public partial class Bird : CharacterBody2D
 
     public void RequestJump()
     {
-        Jump();
+        if (!CanMove && isDead)
+        {
+            return;
+        }
+
+        // Cancel the previous jump if it's still awaiting
+        jumpCancellationTokenSource?.Cancel();
+        
+        // Create a new CancellationTokenSource for this jump
+        jumpCancellationTokenSource = new CancellationTokenSource();
+        
+        Jump(jumpCancellationTokenSource.Token);
     }
 
-    private void Jump()
+    private async void Jump(CancellationToken cancellationToken)
     {
         Velocity = new Vector2(Velocity.X, -jumpSpeed);
 
         if (!isDead)
         {
-            AnimatedSprite2D.Play("default");
             AnimatedSprite2D.Play("jump");
 
             // Only spawn particle if cooldown has expired
             if (particleCooldownExpired)
             {
                 SpawnParticle();
+            }
+
+            try
+            {
+                // Await the delay, but cancel if requested
+                await Task.Delay(TimeSpan.FromSeconds(0.25f), cancellationToken);
+                
+                // If not canceled, play default animation
+                if(!isDead)
+                {
+                    AnimatedSprite2D.Play("default");
+                }
+                else
+                {
+                    AnimatedSprite2D.Play("death");
+                }
+            }
+            catch (TaskCanceledException)
+            {
+                if(isDead)
+                {
+                    AnimatedSprite2D.Play("death");
+                }
             }
         }
     }

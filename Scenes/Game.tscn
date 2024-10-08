@@ -1,7 +1,8 @@
-[gd_scene load_steps=25 format=3 uid="uid://bstq61tflkasa"]
+[gd_scene load_steps=35 format=3 uid="uid://bstq61tflkasa"]
 
 [ext_resource type="Script" path="res://Scripts/Bird.cs" id="1_53med"]
 [ext_resource type="Texture2D" uid="uid://6jocqjyw5wb" path="res://Assets/Textures/Bird/Bird_dead.png" id="1_eq1r0"]
+[ext_resource type="Script" path="res://Scripts/GameManager.cs" id="1_wbi7r"]
 [ext_resource type="Texture2D" uid="uid://dq3nxjvsdq7if" path="res://Assets/Textures/Bird/Bird.png" id="2_76e2o"]
 [ext_resource type="Texture2D" uid="uid://dbyl1sgbarhwv" path="res://Assets/Textures/Bird/Bird_flapped.png" id="3_048b3"]
 [ext_resource type="Texture2D" uid="uid://dyi121qmn3k30" path="res://Assets/Textures/Game/ScoreCircle.png" id="3_e6f8e"]
@@ -17,6 +18,10 @@
 [ext_resource type="PackedScene" uid="uid://c0h73a7wj6o7n" path="res://Scenes/ParticleObject.tscn" id="10_rttel"]
 [ext_resource type="PackedScene" uid="uid://bt3ivx5b5fik6" path="res://Scenes/CandyObject.tscn" id="11_72wu0"]
 [ext_resource type="Script" path="res://Scripts/CandyManager.cs" id="11_rjc8d"]
+[ext_resource type="Script" path="res://Scripts/MenuController.cs" id="19_85ivh"]
+[ext_resource type="FontFile" uid="uid://dbuc4y6mt4n5c" path="res://Assets/Fonts/Blissful Thinking.otf" id="19_v2luc"]
+[ext_resource type="Texture2D" uid="uid://ccrovicaox78v" path="res://Assets/Textures/Game/Candy.png" id="20_fu6nq"]
+[ext_resource type="Texture2D" uid="uid://c6rhrhdty56j5" path="res://Assets/Textures/UI/EmptyButton.png" id="22_ulkjv"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_qr77k"]
 size = Vector2(40, 1280)
@@ -56,9 +61,6 @@ animations = [{
 "frames": [{
 "duration": 1.0,
 "texture": ExtResource("3_048b3")
-}, {
-"duration": 1.0,
-"texture": ExtResource("2_76e2o")
 }],
 "loop": false,
 "name": &"jump",
@@ -68,9 +70,35 @@ animations = [{
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_gnmvf"]
 size = Vector2(42, 42)
 
-[node name="Game" type="Node2D"]
-metadata/_edit_horizontal_guides_ = [1104.0, 152.0]
-metadata/_edit_vertical_guides_ = [104.0, 616.0]
+[sub_resource type="LabelSettings" id="LabelSettings_02w3g"]
+font = ExtResource("19_v2luc")
+font_size = 98
+font_color = Color(0.501961, 0.501961, 0.501961, 1)
+
+[sub_resource type="LabelSettings" id="LabelSettings_ut1i1"]
+font = ExtResource("19_v2luc")
+font_size = 52
+font_color = Color(1, 0.203922, 0.392157, 1)
+
+[sub_resource type="LabelSettings" id="LabelSettings_amhri"]
+font = ExtResource("19_v2luc")
+font_size = 64
+font_color = Color(1, 0.509804, 0.027451, 1)
+
+[sub_resource type="LabelSettings" id="LabelSettings_4qs43"]
+font = ExtResource("19_v2luc")
+font_size = 64
+font_color = Color(0.501961, 0.501961, 0.501961, 1)
+
+[sub_resource type="LabelSettings" id="LabelSettings_pw63a"]
+font = ExtResource("19_v2luc")
+font_size = 64
+font_color = Color(0.501961, 0.501961, 0.501961, 1)
+
+[node name="Game" type="Node2D" node_paths=PackedStringArray("Bird", "MenuController")]
+script = ExtResource("1_wbi7r")
+Bird = NodePath("Bird")
+MenuController = NodePath("MenuController")
 
 [node name="SpriteContainer" type="Node2D" parent="."]
 
@@ -130,10 +158,11 @@ ScoreHandler = NodePath("../ScoreHandler")
 script = ExtResource("8_ysqi3")
 SpikeObjectScene = ExtResource("7_og58m")
 
-[node name="ScoreHandler" type="Node2D" parent="." node_paths=PackedStringArray("ScoreLabel", "Bird")]
+[node name="ScoreHandler" type="Node2D" parent="." node_paths=PackedStringArray("ScoreLabel", "Bird", "MenuController")]
 script = ExtResource("9_hncon")
 ScoreLabel = NodePath("ScoreLabel")
 Bird = NodePath("../Bird")
+MenuController = NodePath("../MenuController")
 
 [node name="ScoreLabel" type="Label" parent="ScoreHandler"]
 anchors_preset = 15
@@ -143,7 +172,6 @@ offset_right = 720.0
 offset_bottom = 1255.0
 grow_horizontal = 2
 grow_vertical = 2
-text = "00"
 label_settings = SubResource("LabelSettings_6a876")
 horizontal_alignment = 1
 vertical_alignment = 1
@@ -167,3 +195,184 @@ shape = SubResource("RectangleShape2D_gnmvf")
 
 [node name="Camera2D" type="Camera2D" parent="."]
 position = Vector2(360, 640)
+
+[node name="MenuController" type="Control" parent="." node_paths=PackedStringArray("Bird", "GameManager")]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_right = 720.0
+offset_bottom = 1280.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+script = ExtResource("19_85ivh")
+Bird = NodePath("../Bird")
+GameManager = NodePath("..")
+
+[node name="GameNameLabel" type="Label" parent="MenuController"]
+layout_mode = 1
+anchors_preset = -1
+anchor_top = 0.1
+anchor_right = 1.0
+anchor_bottom = 0.1
+offset_bottom = 209.0
+grow_horizontal = 2
+text = "DON'T TOUCH
+THE SPIKES"
+label_settings = SubResource("LabelSettings_02w3g")
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="TapToJumpLabel" type="Label" parent="MenuController"]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.5
+anchor_top = 0.39
+anchor_right = 0.5
+anchor_bottom = 0.39
+offset_left = -93.0
+offset_top = -56.5
+offset_right = 93.0
+offset_bottom = 56.5
+grow_horizontal = 2
+grow_vertical = 2
+text = "TAP
+TO JUMP"
+label_settings = SubResource("LabelSettings_ut1i1")
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="VBoxContainer" type="VBoxContainer" parent="MenuController"]
+layout_mode = 1
+anchors_preset = -1
+anchor_top = 0.9
+anchor_right = 1.0
+anchor_bottom = 0.9
+grow_horizontal = 2
+grow_vertical = 0
+alignment = 2
+
+[node name="HBoxContainer" type="HBoxContainer" parent="MenuController/VBoxContainer"]
+layout_mode = 2
+alignment = 1
+
+[node name="CandyTextureRect" type="TextureRect" parent="MenuController/VBoxContainer/HBoxContainer"]
+custom_minimum_size = Vector2(98, 0)
+layout_mode = 2
+texture = ExtResource("20_fu6nq")
+stretch_mode = 5
+
+[node name="MarginContainer" type="MarginContainer" parent="MenuController/VBoxContainer/HBoxContainer"]
+layout_mode = 2
+theme_override_constants/margin_left = 32
+
+[node name="CandyLabel" type="Label" parent="MenuController/VBoxContainer/HBoxContainer"]
+layout_mode = 2
+text = "1"
+label_settings = SubResource("LabelSettings_amhri")
+
+[node name="BestScoreLabel" type="Label" parent="MenuController/VBoxContainer"]
+layout_mode = 2
+text = "BEST SCORE: 420"
+label_settings = SubResource("LabelSettings_4qs43")
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="GamesPlayedLabel" type="Label" parent="MenuController/VBoxContainer"]
+layout_mode = 2
+text = "GAMES PLAYED: 69"
+label_settings = SubResource("LabelSettings_pw63a")
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="LeftSideButtonsVBoxContainer" type="VBoxContainer" parent="MenuController"]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.05
+anchor_right = 0.05
+anchor_bottom = 1.0
+grow_vertical = 2
+alignment = 1
+
+[node name="Button" type="Button" parent="MenuController/LeftSideButtonsVBoxContainer"]
+layout_mode = 2
+focus_mode = 0
+icon = ExtResource("22_ulkjv")
+flat = true
+
+[node name="Button2" type="Button" parent="MenuController/LeftSideButtonsVBoxContainer"]
+layout_mode = 2
+focus_mode = 0
+icon = ExtResource("22_ulkjv")
+flat = true
+
+[node name="Button3" type="Button" parent="MenuController/LeftSideButtonsVBoxContainer"]
+layout_mode = 2
+focus_mode = 0
+icon = ExtResource("22_ulkjv")
+flat = true
+
+[node name="Button4" type="Button" parent="MenuController/LeftSideButtonsVBoxContainer"]
+layout_mode = 2
+focus_mode = 0
+icon = ExtResource("22_ulkjv")
+flat = true
+
+[node name="Button5" type="Button" parent="MenuController/LeftSideButtonsVBoxContainer"]
+layout_mode = 2
+focus_mode = 0
+icon = ExtResource("22_ulkjv")
+flat = true
+
+[node name="Button6" type="Button" parent="MenuController/LeftSideButtonsVBoxContainer"]
+layout_mode = 2
+focus_mode = 0
+icon = ExtResource("22_ulkjv")
+flat = true
+
+[node name="RightSideButtonsVBoxContainer" type="VBoxContainer" parent="MenuController"]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.95
+anchor_right = 0.95
+anchor_bottom = 1.0
+grow_horizontal = 0
+grow_vertical = 2
+alignment = 1
+
+[node name="Button" type="Button" parent="MenuController/RightSideButtonsVBoxContainer"]
+layout_mode = 2
+focus_mode = 0
+icon = ExtResource("22_ulkjv")
+flat = true
+
+[node name="Button2" type="Button" parent="MenuController/RightSideButtonsVBoxContainer"]
+layout_mode = 2
+focus_mode = 0
+icon = ExtResource("22_ulkjv")
+flat = true
+
+[node name="Button3" type="Button" parent="MenuController/RightSideButtonsVBoxContainer"]
+layout_mode = 2
+focus_mode = 0
+icon = ExtResource("22_ulkjv")
+flat = true
+
+[node name="Button4" type="Button" parent="MenuController/RightSideButtonsVBoxContainer"]
+layout_mode = 2
+focus_mode = 0
+icon = ExtResource("22_ulkjv")
+flat = true
+
+[node name="Button5" type="Button" parent="MenuController/RightSideButtonsVBoxContainer"]
+layout_mode = 2
+focus_mode = 0
+icon = ExtResource("22_ulkjv")
+flat = true
+
+[node name="Button6" type="Button" parent="MenuController/RightSideButtonsVBoxContainer"]
+layout_mode = 2
+focus_mode = 0
+icon = ExtResource("22_ulkjv")
+flat = true

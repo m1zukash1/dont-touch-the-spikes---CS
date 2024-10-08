@@ -35,7 +35,7 @@ public partial class CandyObject : Node2D
         LabelSettings scoreLabelSettings = new LabelSettings
         {
             FontSize = 64,
-            FontColor = new Color(1, 0.5f, 0, 1),
+            FontColor = new Color("ff8207"),
             Font = LabelFont,
         };
 
