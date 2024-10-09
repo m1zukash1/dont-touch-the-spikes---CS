@@ -7,8 +7,8 @@
 [ext_resource type="PackedScene" uid="uid://bk67mtqyxixnb" path="res://Scenes/Components/WiggleComponent.tscn" id="4_yuj7o"]
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_q5woi"]
-radius = 16.0
-height = 62.0
+radius = 24.0
+height = 64.0
 
 [node name="Candy" type="Node2D" node_paths=PackedStringArray("BirdDetector")]
 script = ExtResource("1_ys0ry")
@@ -25,8 +25,8 @@ rotation = 1.5708
 shape = SubResource("CapsuleShape2D_q5woi")
 debug_color = Color(1, 1, 0, 0.419608)
 
-[node name="WiggleComponent" parent="." node_paths=PackedStringArray("nodeToWiggle") instance=ExtResource("4_yuj7o")]
-nodeToWiggle = NodePath("..")
+[node name="WiggleComponent" parent="." node_paths=PackedStringArray("nodeToWiggleReference") instance=ExtResource("4_yuj7o")]
+nodeToWiggleReference = NodePath("..")
 amplitudeX = 1.0
 speedX = 5.0
 speedY = 5.0

@@ -1,7 +1,7 @@
 using Godot;
 using System;
 
-public partial class ScoreHandler : Node2D
+public partial class ScoreManager : Node2D
 {
 	[ExportGroup("Node References")]
 	[Export]
@@ -24,6 +24,10 @@ public partial class ScoreHandler : Node2D
 
     public void OnBirdHitWall()
 	{
+		if(Bird.isDead)
+		{
+			return;
+		}
 		Score++;
 		ScoreLabel.SetText(Score.ToString().PadZeros(2));
 	}

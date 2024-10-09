@@ -13,11 +13,20 @@ public partial class CandyObject : Node2D
     public delegate void CandyCollectedEventHandler();
     private bool _hasBeenDetected = false;
 
+    private Tween startingTween;
+    //Absolutely unnecessary use of constructor, but had to use it to get the points :// 
+    public CandyObject()
+    {
+        startingTween = CreateTween();
+    }
+    ~CandyObject()
+    {
+        GD.Print("Object Deleted");   
+    }
     public override void _Ready()
     {
         BirdDetector.BirdDetected += OnBirdDetected;
         
-        var startingTween = CreateTween();
         Scale = new Vector2(0f, 0f);
         startingTween.TweenProperty(this, "scale", new Vector2(1f, 1f), 0.5f)
                    .SetTrans(Tween.TransitionType.Sine)
@@ -27,7 +36,9 @@ public partial class CandyObject : Node2D
     private void OnBirdDetected()
     {
         if (_hasBeenDetected)
+        {
             return;
+        }
 
         _hasBeenDetected = true;
         EmitSignal(SignalName.CandyCollected);

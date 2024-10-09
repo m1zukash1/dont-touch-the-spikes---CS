@@ -1,10 +1,10 @@
 using Godot;
 using System;
 using System.Diagnostics;
+using System.Globalization;
 using System.Threading;
 using System.Threading.Tasks; // Import for async, delay, and cancellation
-
-public partial class Bird : CharacterBody2D
+public partial class Bird : CharacterBody2D, IFormattable
 {
     public enum FacingDirection
     {
@@ -48,7 +48,7 @@ public partial class Bird : CharacterBody2D
     
     public override void _Ready()
     {
-        // Initialize anything necessary here
+
     }
 
     public async void OnHitWall()
@@ -80,12 +80,18 @@ public partial class Bird : CharacterBody2D
         {
             return;
         }
-        Debug.Assert(false); //IMPLEMENT DEATH!
+        //Debug.Assert(false); //IMPLEMENT DEATH!
         isDead = true;
         EmitSignal(SignalName.Died);
         speed *= 3;
         Velocity = new Vector2(speed, Velocity.Y);
         AnimatedSprite2D.Play("death");
+
+        var tween = CreateTween();
+        tween.TweenProperty(this, "modulate:a", 0f, 0.75f)
+            .SetTrans(Tween.TransitionType.Sine)
+            .SetEase(Tween.EaseType.InOut)
+            .Finished += () => Hide();
     }
 
     public override void _Input(InputEvent @event)
@@ -187,5 +193,30 @@ public partial class Bird : CharacterBody2D
 
             particleCooldownExpired = true; // Cooldown finished, allow particle spawning again
         }
+    }
+    public string ToString(string format, IFormatProvider formatProvider)
+    {
+        if (string.IsNullOrEmpty(format)) format = "G";
+        if (formatProvider == null) formatProvider = CultureInfo.CurrentCulture;
+
+        switch (format.ToUpperInvariant())
+        {
+            case "G": // General format
+            case "FULL":
+                return $"Position: ({GlobalPosition.X.ToString("F2", formatProvider)}, {GlobalPosition.Y.ToString("F2", formatProvider)})\n" +
+                    $"Velocity: ({Velocity.X.ToString("F2", formatProvider)}, {Velocity.Y.ToString("F2", formatProvider)})\n" +
+                    $"Current Animation: {AnimatedSprite2D.Animation}\n" +
+                    $"Facing Direction: {CurrentFacingDirection}\n" +  // Added facing direction
+                    $"Can Hit Wall: {canHitWall}\n" +
+                    $"Is Dead: {isDead}\n" +
+                    $"Particle Cooldown Expired: {particleCooldownExpired}\n" +
+                    $"Can Move: {CanMove}";
+            default:
+                throw new FormatException($"The '{format}' format is not supported.");
+        }
+    }
+    public override string ToString()
+    {
+        return ToString("G", CultureInfo.CurrentCulture);
     }
 }

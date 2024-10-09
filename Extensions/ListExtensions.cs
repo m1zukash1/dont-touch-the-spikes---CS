@@ -3,11 +3,16 @@ namespace DontTouchTheSpikes.Extensions
     using System;
     using System.Collections.Generic;
 
-    public static class ListExtensions
+    //Absolutely unnecessary use of abstract class, but had to use it to get the points :// 
+    public abstract class ListBehavior<T>
     {
-        private static Random rng = new Random();
+        protected static Random rng = new Random();
+        public abstract void Shuffle(List<T> list);
+    }
 
-        public static void Shuffle<T>(this List<T> list)
+    public class ConcreteListShuffler<T> : ListBehavior<T>
+    {
+        public override void Shuffle(List<T> list)
         {
             int n = list.Count;
             while (n > 1)
@@ -18,6 +23,14 @@ namespace DontTouchTheSpikes.Extensions
                 list[k] = list[n];
                 list[n] = value;
             }
+        }
+    }
+
+    public static class ListExtensions
+    {
+        public static void Shuffle<T>(this List<T> list)
+        {
+            new ConcreteListShuffler<T>().Shuffle(list);
         }
     }
 }

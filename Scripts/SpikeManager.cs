@@ -15,7 +15,7 @@ public partial class SpikeManager : Node2D
     [Export]
     private Bird Bird;
     [Export]
-    private ScoreHandler ScoreHandler;
+    private ScoreManager ScoreHandler;
 
     private List<SpikeObject> leftSpikes;
     private List<SpikeObject> rightSpikes;
@@ -35,6 +35,10 @@ public partial class SpikeManager : Node2D
 
     private void OnBirdHitWall()
     {
+        if(Bird.isDead)
+        {
+            return;
+        }
         LoadSpikes();
     }
 

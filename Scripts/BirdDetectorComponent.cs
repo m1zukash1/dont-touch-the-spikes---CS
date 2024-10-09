@@ -16,6 +16,10 @@ public partial class BirdDetectorComponent : Area2D
 		{
 			return;
 		}
+		if(Bird.isDead)
+		{
+			return;
+		}
 		EmitSignal(SignalName.BirdDetected);
     }
 }

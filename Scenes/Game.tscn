@@ -1,6 +1,5 @@
-[gd_scene load_steps=35 format=3 uid="uid://bstq61tflkasa"]
+[gd_scene load_steps=46 format=3 uid="uid://bstq61tflkasa"]
 
-[ext_resource type="Script" path="res://Scripts/Bird.cs" id="1_53med"]
 [ext_resource type="Texture2D" uid="uid://6jocqjyw5wb" path="res://Assets/Textures/Bird/Bird_dead.png" id="1_eq1r0"]
 [ext_resource type="Script" path="res://Scripts/GameManager.cs" id="1_wbi7r"]
 [ext_resource type="Texture2D" uid="uid://dq3nxjvsdq7if" path="res://Assets/Textures/Bird/Bird.png" id="2_76e2o"]
@@ -14,14 +13,19 @@
 [ext_resource type="Script" path="res://Scripts/SpikeSpawner.cs" id="8_ysqi3"]
 [ext_resource type="PackedScene" uid="uid://btx2x5x8o5nt0" path="res://Scenes/Components/DeathZoneComponent.tscn" id="9_82gds"]
 [ext_resource type="FontFile" uid="uid://c5lw0kg3y6frt" path="res://Assets/Fonts/GemunuLibre-SemiBold.ttf" id="9_aless"]
-[ext_resource type="Script" path="res://Scripts/ScoreHandler.cs" id="9_hncon"]
-[ext_resource type="PackedScene" uid="uid://c0h73a7wj6o7n" path="res://Scenes/ParticleObject.tscn" id="10_rttel"]
+[ext_resource type="Script" path="res://Scripts/ScoreManager.cs" id="10_eqajx"]
 [ext_resource type="PackedScene" uid="uid://bt3ivx5b5fik6" path="res://Scenes/CandyObject.tscn" id="11_72wu0"]
 [ext_resource type="Script" path="res://Scripts/CandyManager.cs" id="11_rjc8d"]
+[ext_resource type="Script" path="res://Scripts/Bird.cs" id="14_qgwu4"]
+[ext_resource type="PackedScene" uid="uid://c0h73a7wj6o7n" path="res://Scenes/ParticleObject.tscn" id="15_42d2e"]
 [ext_resource type="Script" path="res://Scripts/MenuController.cs" id="19_85ivh"]
 [ext_resource type="FontFile" uid="uid://dbuc4y6mt4n5c" path="res://Assets/Fonts/Blissful Thinking.otf" id="19_v2luc"]
 [ext_resource type="Texture2D" uid="uid://ccrovicaox78v" path="res://Assets/Textures/Game/Candy.png" id="20_fu6nq"]
 [ext_resource type="Texture2D" uid="uid://c6rhrhdty56j5" path="res://Assets/Textures/UI/EmptyButton.png" id="22_ulkjv"]
+[ext_resource type="Texture2D" uid="uid://bnxcb5eqb1v60" path="res://Assets/Textures/UI/Score Box.png" id="23_230yb"]
+[ext_resource type="Script" path="res://Scripts/DeathScreenController.cs" id="23_bvyet"]
+[ext_resource type="Texture2D" uid="uid://dugy7ni77uy78" path="res://Assets/Textures/UI/Replay Box.png" id="24_f5unw"]
+[ext_resource type="Script" path="res://Scripts/DebugController.cs" id="26_ldlog"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_qr77k"]
 size = Vector2(40, 1280)
@@ -95,6 +99,36 @@ font = ExtResource("19_v2luc")
 font_size = 64
 font_color = Color(0.501961, 0.501961, 0.501961, 1)
 
+[sub_resource type="LabelSettings" id="LabelSettings_s423t"]
+font = ExtResource("19_v2luc")
+font_size = 98
+font_color = Color(0.501961, 0.501961, 0.501961, 1)
+
+[sub_resource type="CompressedTexture2D" id="CompressedTexture2D_3xxo2"]
+load_path = "res://.godot/imported/Candy.png-9137d2fd06443777045e2958b93ce6a5.ctex"
+
+[sub_resource type="LabelSettings" id="LabelSettings_1ons5"]
+font = ExtResource("19_v2luc")
+font_size = 64
+font_color = Color(1, 0.509804, 0.027451, 1)
+
+[sub_resource type="LabelSettings" id="LabelSettings_0rc65"]
+font = ExtResource("19_v2luc")
+font_size = 64
+font_color = Color(0.501961, 0.501961, 0.501961, 1)
+
+[sub_resource type="LabelSettings" id="LabelSettings_37srh"]
+font = ExtResource("19_v2luc")
+font_size = 64
+font_color = Color(0.501961, 0.501961, 0.501961, 1)
+
+[sub_resource type="LabelSettings" id="LabelSettings_v1wwc"]
+font = ExtResource("19_v2luc")
+font_size = 56
+
+[sub_resource type="LabelSettings" id="LabelSettings_af85j"]
+font_color = Color(0.121569, 0.121569, 0.121569, 1)
+
 [node name="Game" type="Node2D" node_paths=PackedStringArray("Bird", "MenuController")]
 script = ExtResource("1_wbi7r")
 Bird = NodePath("Bird")
@@ -152,19 +186,19 @@ script = ExtResource("6_pjs4x")
 SpikeObjectScene = ExtResource("7_og58m")
 spikeSpawner = NodePath("SpikeSpawner")
 Bird = NodePath("../Bird")
-ScoreHandler = NodePath("../ScoreHandler")
+ScoreHandler = NodePath("../ScoreManager")
 
 [node name="SpikeSpawner" type="Node" parent="SpikeManager"]
 script = ExtResource("8_ysqi3")
 SpikeObjectScene = ExtResource("7_og58m")
 
-[node name="ScoreHandler" type="Node2D" parent="." node_paths=PackedStringArray("ScoreLabel", "Bird", "MenuController")]
-script = ExtResource("9_hncon")
+[node name="ScoreManager" type="Node2D" parent="." node_paths=PackedStringArray("ScoreLabel", "Bird", "MenuController")]
+script = ExtResource("10_eqajx")
 ScoreLabel = NodePath("ScoreLabel")
 Bird = NodePath("../Bird")
 MenuController = NodePath("../MenuController")
 
-[node name="ScoreLabel" type="Label" parent="ScoreHandler"]
+[node name="ScoreLabel" type="Label" parent="ScoreManager"]
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
@@ -183,8 +217,8 @@ CandyObjectScene = ExtResource("11_72wu0")
 
 [node name="Bird" type="CharacterBody2D" parent="." node_paths=PackedStringArray("AnimatedSprite2D")]
 position = Vector2(360, 640)
-script = ExtResource("1_53med")
-ParticleObjectScene = ExtResource("10_rttel")
+script = ExtResource("14_qgwu4")
+ParticleObjectScene = ExtResource("15_42d2e")
 AnimatedSprite2D = NodePath("AnimatedSprite2D")
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="Bird"]
@@ -196,7 +230,7 @@ shape = SubResource("RectangleShape2D_gnmvf")
 [node name="Camera2D" type="Camera2D" parent="."]
 position = Vector2(360, 640)
 
-[node name="MenuController" type="Control" parent="." node_paths=PackedStringArray("Bird", "GameManager")]
+[node name="MenuController" type="Control" parent="." node_paths=PackedStringArray("Bird", "GameManager", "CandyLabel", "BestScoreLabel", "GamesPlayedLabel")]
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
@@ -209,6 +243,9 @@ mouse_filter = 2
 script = ExtResource("19_85ivh")
 Bird = NodePath("../Bird")
 GameManager = NodePath("..")
+CandyLabel = NodePath("VBoxContainer/HBoxContainer/CandyLabel")
+BestScoreLabel = NodePath("VBoxContainer/BestScoreLabel")
+GamesPlayedLabel = NodePath("VBoxContainer/GamesPlayedLabel")
 
 [node name="GameNameLabel" type="Label" parent="MenuController"]
 layout_mode = 1
@@ -376,3 +413,154 @@ layout_mode = 2
 focus_mode = 0
 icon = ExtResource("22_ulkjv")
 flat = true
+
+[node name="DeathScreenController" type="Control" parent="." node_paths=PackedStringArray("ScoreManager", "CandyManager", "Bird", "ReplayButton", "ScoreLabel", "CandyLabel", "BestScoreLabel", "GamesPlayedLabel")]
+visible = false
+custom_minimum_size = Vector2(720, 1280)
+layout_mode = 3
+anchors_preset = 0
+offset_right = 40.0
+offset_bottom = 40.0
+script = ExtResource("23_bvyet")
+ScoreManager = NodePath("../ScoreManager")
+CandyManager = NodePath("../CandyManager")
+Bird = NodePath("../Bird")
+ReplayButton = NodePath("ReplayVBoxContainer/ReplayButton")
+ScoreLabel = NodePath("ReplayVBoxContainer/ScoreBoxTextureRect/ScoreLabel")
+CandyLabel = NodePath("VBoxContainer/HBoxContainer/CandyLabel")
+BestScoreLabel = NodePath("VBoxContainer/BestScoreLabel")
+GamesPlayedLabel = NodePath("VBoxContainer/GamesPlayedLabel")
+
+[node name="GameNameLabel" type="Label" parent="DeathScreenController"]
+layout_mode = 1
+anchors_preset = -1
+anchor_top = 0.1
+anchor_right = 1.0
+anchor_bottom = 0.1
+offset_bottom = 209.0
+grow_horizontal = 2
+text = "DON'T TOUCH
+THE SPIKES"
+label_settings = SubResource("LabelSettings_s423t")
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="VBoxContainer" type="VBoxContainer" parent="DeathScreenController"]
+layout_mode = 1
+anchors_preset = -1
+anchor_top = 0.9
+anchor_right = 1.0
+anchor_bottom = 0.9
+grow_horizontal = 2
+grow_vertical = 0
+alignment = 2
+
+[node name="HBoxContainer" type="HBoxContainer" parent="DeathScreenController/VBoxContainer"]
+layout_mode = 2
+alignment = 1
+
+[node name="CandyTextureRect" type="TextureRect" parent="DeathScreenController/VBoxContainer/HBoxContainer"]
+custom_minimum_size = Vector2(98, 0)
+layout_mode = 2
+texture = SubResource("CompressedTexture2D_3xxo2")
+stretch_mode = 5
+
+[node name="MarginContainer" type="MarginContainer" parent="DeathScreenController/VBoxContainer/HBoxContainer"]
+layout_mode = 2
+theme_override_constants/margin_left = 32
+
+[node name="CandyLabel" type="Label" parent="DeathScreenController/VBoxContainer/HBoxContainer"]
+layout_mode = 2
+text = "1"
+label_settings = SubResource("LabelSettings_1ons5")
+
+[node name="BestScoreLabel" type="Label" parent="DeathScreenController/VBoxContainer"]
+layout_mode = 2
+text = "BEST SCORE: 420"
+label_settings = SubResource("LabelSettings_0rc65")
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="GamesPlayedLabel" type="Label" parent="DeathScreenController/VBoxContainer"]
+layout_mode = 2
+text = "GAMES PLAYED: 69"
+label_settings = SubResource("LabelSettings_37srh")
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="ReplayVBoxContainer" type="VBoxContainer" parent="DeathScreenController"]
+layout_mode = 1
+anchors_preset = 14
+anchor_top = 0.5
+anchor_right = 1.0
+anchor_bottom = 0.5
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/separation = 64
+alignment = 1
+
+[node name="ScoreBoxTextureRect" type="TextureRect" parent="DeathScreenController/ReplayVBoxContainer"]
+layout_mode = 2
+texture = ExtResource("23_230yb")
+stretch_mode = 5
+
+[node name="ScoreLabel" type="Label" parent="DeathScreenController/ReplayVBoxContainer/ScoreBoxTextureRect"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+text = "69
+POINTS"
+label_settings = SubResource("LabelSettings_v1wwc")
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="ReplayButton" type="Button" parent="DeathScreenController/ReplayVBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 4
+focus_mode = 0
+theme_override_colors/font_disabled_color = Color(1, 1, 1, 1)
+theme_override_colors/font_hover_pressed_color = Color(1, 1, 1, 1)
+theme_override_colors/font_hover_color = Color(1, 1, 1, 1)
+theme_override_colors/font_pressed_color = Color(1, 1, 1, 1)
+theme_override_colors/font_focus_color = Color(1, 1, 1, 1)
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_fonts/font = ExtResource("19_v2luc")
+theme_override_font_sizes/font_size = 64
+text = "REPLAY"
+icon = ExtResource("24_f5unw")
+flat = true
+icon_alignment = 1
+
+[node name="DebugController" type="Control" parent="." node_paths=PackedStringArray("Bird", "DebugLabel")]
+custom_minimum_size = Vector2(720, 1280)
+layout_mode = 3
+anchors_preset = 0
+offset_right = 40.0
+offset_bottom = 40.0
+mouse_filter = 2
+script = ExtResource("26_ldlog")
+ShowDebugInfo = true
+Bird = NodePath("../Bird")
+DebugLabel = NodePath("DebugLabel")
+
+[node name="DebugLabel" type="Label" parent="DebugController"]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.05
+anchor_top = 0.9
+anchor_right = 0.05
+anchor_bottom = 0.9
+offset_top = -23.0
+offset_right = 40.0
+grow_vertical = 0
+text = "Position: (360, 640)
+Velocity: (0, 0)
+Current Animation: default
+Can Hit Wall: True
+Is Dead: False
+Particle Cooldown Expired: True
+Can Move: False"
+label_settings = SubResource("LabelSettings_af85j")

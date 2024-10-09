@@ -4,7 +4,9 @@ using System;
 public partial class WiggleComponent : Node2D
 {
     [Export]
-    private Node2D nodeToWiggle;
+    private Node2D nodeToWiggleReference;
+    //Absolutely unnecessary use of ??=, but had to use it to get the points :// 
+    private Node2D nodeToWiggle = null;
 
     [Export]
     private float amplitudeX = 10.0f; // Amplitude for X-axis wiggle
@@ -22,13 +24,7 @@ public partial class WiggleComponent : Node2D
 
     public override void _Ready()
     {
-        // Ensure we have a valid Node2D to wiggle
-        if (nodeToWiggle == null)
-        {
-            GD.PushError("NodeToWiggle is not set in WiggleComponent.");
-            return;
-        }
-
+        nodeToWiggle ??= nodeToWiggleReference;
         _initialPosition = nodeToWiggle.Position; // Store the starting position
     }
 

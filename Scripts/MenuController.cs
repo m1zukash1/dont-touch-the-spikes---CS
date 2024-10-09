@@ -4,16 +4,27 @@ using System.Threading.Tasks;
 
 public partial class MenuController : Control
 {
+    [ExportGroup("Node References")]
     [Export]
     private Bird Bird;
+    [Export]
+    private GameManager GameManager;
+    [Export]
+    private Label CandyLabel;
+    [Export]
+    private Label BestScoreLabel;
+    [Export]
+    private Label GamesPlayedLabel;
 
+
+
+    [ExportGroup("Animation varaibles")]    
     [Export]
     private float moveDuration = 0.825f;
 
     [Export]
     private float yOffset = 57.5f;
-    [Export]
-    private GameManager GameManager;
+
 
     [Signal]
     public delegate void GameStartedEventHandler();
@@ -28,8 +39,12 @@ public partial class MenuController : Control
     public override void _Ready()
     {
         idleTween = CreateTween().SetLoops();
-
         StartIdleAnimation();
+
+        //TODO: MAYBE FORMAT INTO SEPERATE FUNC LATER
+        CandyLabel.SetText(GameData.Instance.TotalCandiesCollected.ToString());
+        BestScoreLabel.SetText("BEST SCORE: " + GameData.Instance.BestScore);
+        GamesPlayedLabel.SetText("GAMES PLAYED: " + GameData.Instance.TotalGamesPlayed);
     }
 
     public override void _UnhandledInput(InputEvent @event)
