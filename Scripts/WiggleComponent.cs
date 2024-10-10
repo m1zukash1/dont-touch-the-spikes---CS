@@ -28,16 +28,25 @@ public partial class WiggleComponent : Node2D
         _initialPosition = nodeToWiggle.Position; // Store the starting position
     }
 
+    public static WiggleComponent operator ~(WiggleComponent wiggleComponent)
+    {
+        if (wiggleComponent.nodeToWiggle != null)
+        {
+            // Calculate wiggle effect based on sine wave and time
+            float wiggleOffsetX = Mathf.Sin((float)Time.GetTicksMsec() / 1000.0f * wiggleComponent.speedX) * wiggleComponent.amplitudeX;
+            float wiggleOffsetY = Mathf.Sin((float)Time.GetTicksMsec() / 1000.0f * wiggleComponent.speedY) * wiggleComponent.amplitudeY;
+
+            // Apply the wiggle to the node's position
+            wiggleComponent.nodeToWiggle.Position = wiggleComponent._initialPosition + new Vector2(wiggleOffsetX, wiggleOffsetY);
+        }
+        return wiggleComponent;
+    }
+
     public override void _Process(double delta)
     {
         if (nodeToWiggle != null)
         {
-            // Calculate wiggle effect based on sine wave and time
-            float wiggleOffsetX = Mathf.Sin((float)Time.GetTicksMsec() / 1000.0f * speedX) * amplitudeX;
-            float wiggleOffsetY = Mathf.Sin((float)Time.GetTicksMsec() / 1000.0f * speedY) * amplitudeY;
-
-            // Apply the wiggle to the node's position
-            nodeToWiggle.Position = _initialPosition + new Vector2(wiggleOffsetX, wiggleOffsetY);
+            _ = ~this;
         }
     }
 }
