@@ -18,7 +18,7 @@
 - [x] Naudojamas statinis konstruktorius (1 t.)
   **File: `CandyObject.cs`**
 - [ ] Naudojamas dekonstruktorius (0.5 t.)
-- [ ] Naudojamas operatorių perkrovimas (0.5 t.)
+- [x] Naudojamas operatorių perkrovimas (0.5 t.)
 - [x] Naudojamos duomenų struktūros iš System.Collections arba System.Collections.Generic (1 t.)
   **File: `SpikeManager.cs` naudojami `List<SpikeObject>`**
 - [x] Naudojamas operatorius 'is' (0.5 t.)
@@ -37,4 +37,4 @@
 
 ---
 
-## TOTAL: 9
+## TOTAL: 9.5

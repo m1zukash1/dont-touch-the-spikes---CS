@@ -28,8 +28,6 @@ public partial class SpikeManager : Node2D
         leftSpikes = spikeSpawner.LeftSpikes;
         rightSpikes = spikeSpawner.RightSpikes;
         
-        //LoadSpikes();
-
 		Bird.HitWall += OnBirdHitWall;
     }
 
@@ -76,7 +74,7 @@ private int GetSpikeCountBasedOnScore()
 
     (int minSpikes, int maxSpikes) = score switch
     {
-        >= 50 when isHardMode => (8, 9),  // More spikes in hard mode
+        >= 50 when isHardMode => (8, 9),
         >= 50 => (7, 8),
         >= 40 when isHardMode => (7, 8),
         >= 40 => (7, 7),

@@ -3,7 +3,7 @@ using System;
 using System.Diagnostics;
 using System.Globalization;
 using System.Threading;
-using System.Threading.Tasks; // Import for async, delay, and cancellation
+using System.Threading.Tasks;
 public partial class Bird : CharacterBody2D, IFormattable
 {
     public enum FacingDirection
@@ -14,7 +14,7 @@ public partial class Bird : CharacterBody2D, IFormattable
 
     [ExportGroup("Object References")]
     [Export]
-    private PackedScene ParticleObjectScene;  // PackedScene for particle effect
+    private PackedScene ParticleObjectScene;
 
     [ExportGroup("Node References")]
     [Export]
@@ -28,28 +28,17 @@ public partial class Bird : CharacterBody2D, IFormattable
     private float speed = 400f;
     private float jumpSpeed = 700f;
     private float gravity = 2000f;
-
     public bool isDead = false;
-
     public FacingDirection CurrentFacingDirection { get; private set; } = FacingDirection.Right;
 
     [Export]
     private float wallHitCooldown = 0.5f;
     private bool canHitWall = true;
-
-    // Particle cooldown variables
-    private float particleCooldown = 0.33f; // Cooldown time for particles
+    private float particleCooldown = 0.33f;
     private bool particleCooldownExpired = true;
-
-    // For managing jump task cancellation
-    private CancellationTokenSource jumpCancellationTokenSource;
+        private CancellationTokenSource jumpCancellationTokenSource;
 
     public bool CanMove { get; set; } = false;
-    
-    public override void _Ready()
-    {
-
-    }
 
     public async void OnHitWall()
     {
@@ -80,7 +69,6 @@ public partial class Bird : CharacterBody2D, IFormattable
         {
             return;
         }
-        //Debug.Assert(false); //IMPLEMENT DEATH!
         isDead = true;
         EmitSignal(SignalName.Died);
         speed *= 3;
@@ -93,7 +81,6 @@ public partial class Bird : CharacterBody2D, IFormattable
             .SetEase(Tween.EaseType.InOut)
             .Finished += () => Hide();
     }
-
     public override void _Input(InputEvent @event)
     {
         if (isDead)
@@ -105,7 +92,6 @@ public partial class Bird : CharacterBody2D, IFormattable
             RequestJump();
         }
     }
-
     public override void _Process(double delta)
     {
         if(!CanMove)
@@ -122,7 +108,6 @@ public partial class Bird : CharacterBody2D, IFormattable
             RotationDegrees += (float)(1000 * delta);
         }
     }
-
     public void RequestJump()
     {
         if (!CanMove && isDead)
@@ -130,15 +115,12 @@ public partial class Bird : CharacterBody2D, IFormattable
             return;
         }
 
-        // Cancel the previous jump if it's still awaiting
         jumpCancellationTokenSource?.Cancel();
         
-        // Create a new CancellationTokenSource for this jump
         jumpCancellationTokenSource = new CancellationTokenSource();
         
         Jump(jumpCancellationTokenSource.Token);
     }
-
     private async void Jump(CancellationToken cancellationToken)
     {
         Velocity = new Vector2(Velocity.X, -jumpSpeed);
@@ -147,7 +129,6 @@ public partial class Bird : CharacterBody2D, IFormattable
         {
             AnimatedSprite2D.Play("jump");
 
-            // Only spawn particle if cooldown has expired
             if (particleCooldownExpired)
             {
                 SpawnParticle();
@@ -155,10 +136,8 @@ public partial class Bird : CharacterBody2D, IFormattable
 
             try
             {
-                // Await the delay, but cancel if requested
                 await Task.Delay(TimeSpan.FromSeconds(0.25f), cancellationToken);
                 
-                // If not canceled, play default animation
                 if(!isDead)
                 {
                     AnimatedSprite2D.Play("default");
@@ -182,16 +161,15 @@ public partial class Bird : CharacterBody2D, IFormattable
     {
         if (ParticleObjectScene != null && particleCooldownExpired)
         {
-            particleCooldownExpired = false; // Set cooldown to prevent spawning more particles immediately
+            particleCooldownExpired = false;
 
             CpuParticles2D particleInstance = ParticleObjectScene.Instantiate<CpuParticles2D>();
             AddChild(particleInstance);
-            MoveChild(particleInstance, 0); // Move particle node to front
+            MoveChild(particleInstance, 0);
 
-            // Wait for the cooldown duration before allowing new particles
             await Task.Delay(TimeSpan.FromSeconds(particleCooldown));
 
-            particleCooldownExpired = true; // Cooldown finished, allow particle spawning again
+            particleCooldownExpired = true;
         }
     }
     public string ToString(string format, IFormatProvider formatProvider)
@@ -201,12 +179,12 @@ public partial class Bird : CharacterBody2D, IFormattable
 
         switch (format.ToUpperInvariant())
         {
-            case "G": // General format
+            case "G":
             case "FULL":
                 return $"Position: ({GlobalPosition.X.ToString("F2", formatProvider)}, {GlobalPosition.Y.ToString("F2", formatProvider)})\n" +
                     $"Velocity: ({Velocity.X.ToString("F2", formatProvider)}, {Velocity.Y.ToString("F2", formatProvider)})\n" +
                     $"Current Animation: {AnimatedSprite2D.Animation}\n" +
-                    $"Facing Direction: {CurrentFacingDirection}\n" +  // Added facing direction
+                    $"Facing Direction: {CurrentFacingDirection}\n" +
                     $"Can Hit Wall: {canHitWall}\n" +
                     $"Is Dead: {isDead}\n" +
                     $"Particle Cooldown Expired: {particleCooldownExpired}\n" +

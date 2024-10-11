@@ -1,7 +1,8 @@
 [gd_scene load_steps=5 format=3 uid="uid://c0h73a7wj6o7n"]
 
 [ext_resource type="Texture2D" uid="uid://jg5xjm3vofle" path="res://Assets/Textures/Bird/Particle.png" id="1_b71ek"]
-[ext_resource type="Script" path="res://Scripts/ParticleObject.cs" id="2_vsrkp"]
+[ext_resource type="Script" path="res://Scripts/Objets/ParticleObject.cs" id="2_vsrkp"]
+
 
 [sub_resource type="Curve" id="Curve_w20xx"]
 _data = [Vector2(0, 1), 0.0, 0.0, 0, 0, Vector2(1, 0), 0.0, 0.0, 0, 0]

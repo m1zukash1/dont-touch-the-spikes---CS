@@ -71,7 +71,6 @@ public partial class CandyObject : Node2D
         candyTween.TweenProperty(this, "modulate:a", 0.0f, 1f)
                   .SetTrans(Tween.TransitionType.Sine)
                   .SetEase(Tween.EaseType.InOut);
-                  //candyTween.Finished += () => { CallDeferred("queue_free"); scoreLabel.CallDeferred("queue_free"); };
                   candyTween.Finished += () => { QueueFree(); scoreLabel.QueueFree(); };
     }
 }

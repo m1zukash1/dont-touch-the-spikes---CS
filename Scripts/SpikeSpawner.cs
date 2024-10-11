@@ -1,7 +1,7 @@
 using Godot;
 using System;
 using System.Collections.Generic;
-using System.Linq;  // Required for Enumerable.Range
+using System.Linq;
 
 public partial class SpikeSpawner : Node
 {
@@ -29,13 +29,11 @@ public partial class SpikeSpawner : Node
             RightSpikes.Add(rightSpike);
         }
     }
-
     private IEnumerable<int> GenerateSpikePositions()
     {
         return Enumerable.Range(0, NumberOfSpikes)
                          .Select(i => InitialYPosition + i * SpikeSpacing);
     }
-
     private SpikeObject SpawnSpike(float xPos, int yPos, bool flipX = false)
     {
         var spikeObject = SpikeObjectScene.Instantiate<SpikeObject>();

@@ -64,30 +64,27 @@ public partial class MenuController : Control
         idleTween.Stop();
         Vector2 startPosition = Bird.Position;
 
-        // Tweening upwards (jump animation)
         startTween = CreateTween();
         startTween.TweenProperty(Bird, "position:y", startPosition.Y + yOffset, moveDuration / 2f)
             .SetTrans(Tween.TransitionType.Sine)
             .SetEase(Tween.EaseType.InOut)
-            .Finished += () => Bird.AnimatedSprite2D.Play("jump"); // Play jump animation on upward tween
+            .Finished += () => Bird.AnimatedSprite2D.Play("jump");
 
-        // Play jump animation when moving upwards
         Bird.AnimatedSprite2D.Play("default");
 
         await ToSignal(startTween, Tween.SignalName.Finished);
 
         idleTween.Play();
 
-        // Tweening downwards (default animation)
         idleTween.TweenProperty(Bird, "position:y", startPosition.Y - yOffset, moveDuration)
             .SetTrans(Tween.TransitionType.Sine)
             .SetEase(Tween.EaseType.InOut)
-            .Finished += () => Bird.AnimatedSprite2D.Play("default"); // Play default animation on downward tween
+            .Finished += () => Bird.AnimatedSprite2D.Play("default");
 
         idleTween.TweenProperty(Bird, "position:y", startPosition.Y + yOffset, moveDuration)
             .SetTrans(Tween.TransitionType.Sine)
             .SetEase(Tween.EaseType.InOut)
-            .Finished += () => Bird.AnimatedSprite2D.Play("jump"); // Play jump animation on upward tween
+            .Finished += () => Bird.AnimatedSprite2D.Play("jump");
     }
 
     public void StopIdleAnimation()
